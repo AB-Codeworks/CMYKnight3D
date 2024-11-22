@@ -7,7 +7,7 @@ public abstract class Enemy : MonoBehaviour
     protected Animator anim;
     protected bool bGoToMelee_c, bReachedMelee_c;
     protected CharacterController controller;
-    protected Transform tPlayer_c;
+    protected ThePlayer player;
 
     private void Awake()
     {
@@ -17,7 +17,7 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void AttackPlayer(ThePlayer p)
     {
-        tPlayer_c = p.transform;
+        player = p;
         // child classes take over
     }
 
