@@ -9,6 +9,7 @@ All the assets are full colour, I made a custom shader in Unity ShaderGraph that
 - https://leohpaz.itch.io/rpg-essentials-sfx-free - RPG Essentials SFX
 - https://assetstore.unity.com/packages/package/225148 - RPG Tiny Hero Duo
 - https://assetstore.unity.com/packages/package/18197 - 8-Bit Monster FREE
+- https://www.fontspace.com/blair-caps-font-f9102 - Blair Witch Project Font (Freeware)
 
 Note that most modern browsers require you to click one time within the game screen to allow it to play audio. This is not avoidable by me, nor would I. It's a security measure. If you don't want to click, you can play without sound by pressing only the W key, as long as that browser window/tab has focus.
 
