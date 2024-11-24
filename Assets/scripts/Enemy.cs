@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     public float AttackDelay, MoveSpeed;
+    public CCFXLib.Sound_Clip Vocalization;
 
     protected Animator anim;
     protected bool bGoToMelee_c, bReachedMelee_c;
@@ -18,6 +19,7 @@ public abstract class Enemy : MonoBehaviour
     public virtual void AttackPlayer(ThePlayer p)
     {
         player = p;
+        SoundManager.PlaySound_Clip(Vocalization);
         // child classes take over
     }
 

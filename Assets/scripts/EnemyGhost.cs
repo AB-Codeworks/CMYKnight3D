@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -16,8 +17,8 @@ public class EnemyGhost : Enemy
 
     private IEnumerator GhostAttack_1()
     {
-        // TODO notify player that they should block
-        yield return new WaitForSeconds(0.67f);
+        // TODO combat tutorial
+        yield return new WaitForSeconds(1f);
         goProj1_c = Instantiate(Projectile, transform.position, Quaternion.identity);
         SoundManager.PlaySound_Clip(new CCFXLib.Sound_Clip() { SoundID = CCFXLib.Sound_Identifier.Ghost_Projectile });
         anim.SetTrigger("dmg");
@@ -56,8 +57,10 @@ public class EnemyGhost : Enemy
     {
         anim.SetTrigger("atk");
         yield return new WaitForSeconds(AttackDelay);
-        // TODO bonk player
-        // TODO need check if ghost is alive?
+        // TODO need check if ghost is alive before doing the below?
+        // TODO play attack audio
+        // TODO timing of actual hit on player may need to be mid anim, like player attack
+        player.ApplyBlockableDamage(1);
         StartCoroutine(MeleeAttack());
     }
 }

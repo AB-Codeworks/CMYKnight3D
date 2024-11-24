@@ -6,7 +6,7 @@ public class CCFXLib : MonoBehaviour
 {
     public enum Sound_Identifier 
     {
-        Player_Walk_A, Player_Attack_A, Ghost_Move, Ghost_Projectile, Ghost_Voc
+        Player_Walk_A, Player_Attack_A, Ghost_Move, Ghost_Projectile, Ghost_Voc, Player_Block_A, Player_Hit_A, Ghost_Attack
     }
 
     [Serializable]

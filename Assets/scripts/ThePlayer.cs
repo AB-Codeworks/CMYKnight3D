@@ -4,20 +4,30 @@ using UnityEngine.InputSystem;
 
 public class ThePlayer : MonoBehaviour
 {
+    // Save progress idea
+    //Hash128 h = new();
+    //h.Append("Gamsie the Miffed,12,244,A23,G44,TFFTTTFTTFFTTFT,TFTFFTFTT,12,27,5,14,..."); -> pro points for storing an int value of the binary representation of those TFs
+    //Debug.Log("Save hash = " + h.ToString());
+
+
     private delegate void EnemyInRangeEvt(GameObject goEnemy);
     private EnemyInRangeEvt OnEnemyInRange;
 
     public Animator CharacterAnimator;
     public CharacterController Character;
+    [ColorUsage(true, true)] public Color[] CharPalette;
     public float MoveSpeed = 5f;
+    public Material CharacterMaterial, UIBorderMaterial;
 
     private bool bAttacking_c, bEnemies_c, bIdle_c;
     private Vector3 v3Movement_c;
 
-    private static readonly string Attack02 = "Attack02_SwordAndShiled";
+    private static readonly string Attack02 = "Attack02_SwordAndShiled"; // not my typo
     private static readonly string Defend = "Defend_SwordAndShield";
-    private static readonly string MoveF_Nrm = "MoveFWD_Normal_InPlace_SwordAndShield";
+    private static readonly string DefendHit = "DefendHit_SwordAndShield";
+    private static readonly string Hit = "GetHit01_SwordAndShield";
     private static readonly string Idle_Nrm = "Idle_Normal_SwordAndShield";
+    private static readonly string MoveF_Nrm = "MoveFWD_Normal_InPlace_SwordAndShield";
 
     private void Start()
     {
@@ -45,6 +55,7 @@ public class ThePlayer : MonoBehaviour
                     bIdle_c = false;
                     v3Movement_c = Vector3.forward;
                     CharacterAnimator.Play(MoveF_Nrm);
+                    // TODO walk sound
                 }
             }
         }
@@ -94,9 +105,48 @@ public class ThePlayer : MonoBehaviour
 
     public void ApplyBlockableDamage(int iDmg)
     {
-        // TODO if not attacking (blocking), don't take damage
-        // otherwise flash player and take dmg
-        // play unique audio for either case
-        Debug.Log("ow");
+        if (bAttacking_c)
+        {
+            StartCoroutine(FlashPlayer());
+            CharacterAnimator.Play(Hit);
+            StartCoroutine(ReturnFromAnim(0.467f));
+            SoundManager.PlaySound_Clip(new CCFXLib.Sound_Clip() { SoundID = CCFXLib.Sound_Identifier.Player_Hit_A });
+            // TODO subtract hp
+        }
+        else
+        {
+            CharacterAnimator.Play(DefendHit);
+            SoundManager.PlaySound_Clip(new CCFXLib.Sound_Clip() { SoundID = CCFXLib.Sound_Identifier.Player_Block_A });
+            StartCoroutine(ReturnFromAnim(0.333f));
+        }
+    }
+
+    private IEnumerator ReturnFromAnim(float fSeconds)
+    {
+        yield return new WaitForSeconds(fSeconds);
+
+        if (bAttacking_c)
+            CharacterAnimator.Play(Attack02);
+        else if (bEnemies_c)
+            CharacterAnimator.Play(Defend);
+        else if (bIdle_c)
+            CharacterAnimator.Play(Idle_Nrm);
+        else
+            CharacterAnimator.Play(MoveF_Nrm);
+    }
+
+    private IEnumerator FlashPlayer()
+    {
+        CharacterMaterial.SetColor("CutoffColour", CharPalette[1]);
+        CharacterMaterial.SetColor("OutColour2", CharPalette[1]);
+        CharacterMaterial.SetColor("OutColour3", CharPalette[1]);
+        UIBorderMaterial.SetColor("OutColour2", CharPalette[1]);
+        UIBorderMaterial.SetColor("OutColour3", CharPalette[1]);
+        yield return new WaitForSeconds(0.1f);
+        CharacterMaterial.SetColor("CutoffColour", CharPalette[0]);
+        CharacterMaterial.SetColor("OutColour2", CharPalette[2]);
+        CharacterMaterial.SetColor("OutColour3", CharPalette[3]);
+        UIBorderMaterial.SetColor("OutColour2", CharPalette[2]);
+        UIBorderMaterial.SetColor("OutColour3", CharPalette[0]);
     }
 }
